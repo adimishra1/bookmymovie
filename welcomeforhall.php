@@ -190,6 +190,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </div>
 
         <p align="center">
+                <a href="allticketsforhall.php" class="btn btn-info">See your Tickets</a>
                 <a href="logoutforhall.php" class="btn btn-danger">Log Out of Your Account</a>
         </p>
 </body>

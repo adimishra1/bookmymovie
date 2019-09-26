@@ -263,7 +263,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </div>
 
         <p style="font: 25px sans-serif;">
-                Choose Movies to Boasfsafsadok Tickets for the movie.
+                Choose a movie to Book Ticket for the same.
         </p>
         <div class="wrapper">
 
@@ -313,7 +313,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </div>
 
         <p>
-                <a href="logout.php" class="btn btn-danger">See your Tickets</a>
+                <a href="alltickets.php" class="btn btn-info">See your Tickets</a>
                 <a href="passwordreset.php" class="btn btn-warning">Reset Your Password</a>
                 <a href="logout.php" class="btn btn-danger">Log Out of Your Account</a>
         </p>

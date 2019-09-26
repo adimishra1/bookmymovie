@@ -4,7 +4,7 @@ session_start();
 
 // Check if the user is already logged in, if yes then redirect him to welcome page
 if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
-        header("location: welcome.php");
+        header("location: welcomeforhall.php");
         exit;
 }
 
@@ -13,7 +13,7 @@ require_once "dbconnect.php";
 
 // Define variables and initialize with empty values
 $username = $password = "";
-$username_err = $password_err = "";
+$doneauth_err = $username_err = $password_err = "";
 
 // Processing form data when form is submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -33,14 +33,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
 
         // Validate credentials
-        if (empty($username_err) && empty($password_err)) {
+        if (empty($username_err) && empty($password_err) && empty($doneauth_err) ) {
+                // echo "AAAAA";
                 // Prepare a select statement
-                $sql = "SELECT id, username, name, password FROM users WHERE username = ?";
+                $sql = "SELECT id, username, name, password, doneauth FROM hall WHERE username = ?";
 
                 if ($stmt = mysqli_prepare($link, $sql)) {
                         // Bind variables to the prepared statement as parameters
                         mysqli_stmt_bind_param($stmt, "s", $param_username);
-
+                        // echo "AA";
                         // Set parameters
                         $param_username = mysqli_real_escape_string($link,$username);
 
@@ -52,25 +53,32 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 // Check if username exists, if yes then verify password
                                 if (mysqli_stmt_num_rows($stmt) == 1) {
                                         // Bind result variables
-                                        mysqli_stmt_bind_result($stmt, $id, $username, $name, $hashed_password);
+                                        mysqli_stmt_bind_result($stmt, $id, $username, $name, $hashed_password, $doneauth);
                                         if (mysqli_stmt_fetch($stmt)) {
-                                                if (password_verify($password, $hashed_password)) {
-                                                        // Password is correct, so start a new session
-                                                        session_start();
+                                                if($doneauth == 1){
+                                                        if (password_verify($password, $hashed_password)) {
+                                                                // Password is correct, so start a new session
+                                                                session_start();
 
-                                                        // Store data in session variables
-                                                        $_SESSION["loggedin"] = true;
-                                                        $_SESSION["id"] = $id;
-                                                        $_SESSION["username"] = $username;
-                                                        $_SESSION["name"] = $name;
-                                                        
+                                                                // Store data in session variables
+                                                                $_SESSION["loggedin"] = true;
+                                                                $_SESSION["id"] = $id;
+                                                                $_SESSION["username"] = $username;
+                                                                $_SESSION["name"] = $name;
+                                                                
 
-                                                        // Redirect user to welcome page
-                                                        header("location: welcome.php");
-                                                } else {
-                                                        // Display an error message if password is not valid
-                                                        $password_err = "The password you entered was not valid.";
+                                                                // Redirect user to welcome page
+                                                                header("location: welcomeforhall.php");
+                                                        } else {
+                                                                // Display an error message if password is not valid
+                                                                $password_err = "The password you entered was not valid.";
+                                                        }
                                                 }
+                                                else{
+                                                        $doneauth_err = "Authorization is not done, please contact the administrator of the site.";
+                                                        // echo $doneauth_err;
+                                                }
+                                                        
                                         }
                                 } else {
                                         // Display an error message if username doesn't exist
@@ -103,7 +111,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 }
 
                 .wrapper {
-                        width: 350px;
+                        width: 450px;
                         padding: 20px;
                 }
         </style>
@@ -111,7 +119,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 <body>
         <div class="wrapper">
-                <h2>Login</h2>
+                <h2>Login For Theatre Managers</h2>
                 <p>Please fill in your credentials to login.</p>
                 <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
                         <div class="form-group <?php echo (!empty($username_err)) ? 'has-error' : ''; ?>">
@@ -123,12 +131,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 <label>Password</label>
                                 <input type="password" name="password" class="form-control">
                                 <span class="help-block"><?php echo $password_err; ?></span>
+                                <span class="help-block"><?php echo $doneauth_err; ?></span>
                         </div>
                         <div class="form-group">
                                 <input type="submit" class="btn btn-primary" value="Login">
                         </div>
-                        <p>Don't have an account? <a href="register.php">Sign up now</a>.</p>
-                        <p>Are you a movie hall manager? <a href="loginforhall.php">Login from here</a>.</p>
+                        <p>Don't have an account? <a href="registerforhall.php">Sign up now</a>.</p>
+                        <p>Are you a regular user? <a href="login.php">Login from here</a>.</p>
                 </form>
         </div>
 </body>

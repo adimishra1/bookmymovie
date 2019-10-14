@@ -4,12 +4,13 @@ session_start();
 
 // Check if the user is already logged in, if yes then redirect him to welcome page
 if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
-        header("location: welcome.php");
+        $final_loc = $_SESSION["loc"];
+        header("location: $final_loc");
         exit;
 }
 
 // Include config file
-require_once "dbconnect.php";
+require_once "dbconnectuser.php";
 
 // Define variables and initialize with empty values
 $username = $password = "";
@@ -63,6 +64,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                                         $_SESSION["id"] = $id;
                                                         $_SESSION["username"] = $username;
                                                         $_SESSION["name"] = $name;
+                                                        $_SESSION["loc"] = 'welcome.php';
                                                         
 
                                                         // Redirect user to welcome page

@@ -2,7 +2,7 @@
 
 
 define('DB_SERVER', 'localhost');
-define('DB_USERNAME', 'aditya');
+define('DB_USERNAME', 'root');
 define('DB_PASSWORD', 'rootpassword');
 define('DB_NAME', 'bookmoviesdb');
  

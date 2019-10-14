@@ -3,7 +3,7 @@
 session_start();
 
 // Check if the user is logged in, if not then redirect him to login page
-if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
+if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true || $_SESSION["loc"] !== 'welcomeforhall.php' ) {
         header("location: loginforhall.php");
         exit;
 }

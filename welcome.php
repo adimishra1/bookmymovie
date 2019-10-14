@@ -3,7 +3,7 @@
 session_start();
 
 // Check if the user is logged in, if not then redirect him to login page
-if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
+if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true || $_SESSION["loc"] !== 'welcome.php' ) {
         header("location: login.php");
         exit;
 }
@@ -11,7 +11,7 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
 
 
 // Include config file
-require_once "dbconnect.php";
+require_once "dbconnectuser.php";
 
 
 $table = "";
@@ -44,58 +44,6 @@ if ($stmt = mysqli_prepare($link, $sql)) {
 
         mysqli_stmt_close($stmt);
 }
-
-
-// $movielist = $halllist = $timelist = "";
-
-
-// $sql = "SELECT DISTINCT moviename FROM movies ORDER BY moviename ASC";
-
-
-// if ($stmt = mysqli_prepare($link, $sql)) {
-//         if (mysqli_stmt_execute($stmt)) {
-//                 mysqli_stmt_bind_result($stmt, $moviename);
-//                 while (mysqli_stmt_fetch($stmt)) {
-//                         $row = "<option value=\"" . $moviename . "\">" . $moviename . "</option>";
-//                         $movielist .= $row;
-//                 }
-//         } else {
-//                 echo "Oops! Something went wrong. Please try again later.";
-//         }
-//         mysqli_stmt_close($stmt);
-// }
-
-// $sql = "SELECT DISTINCT hall FROM movies ORDER BY hall ASC";
-
-
-// if ($stmt = mysqli_prepare($link, $sql)) {
-//         if (mysqli_stmt_execute($stmt)) {
-//                 mysqli_stmt_bind_result($stmt, $hall);
-//                 while (mysqli_stmt_fetch($stmt)) {
-//                         $row = "<option value=\"" . $hall . "\">" . $hall . "</option>";
-//                         $halllist .= $row;
-//                 }
-//         } else {
-//                 echo "Oops! Something went wrong. Please try again later.";
-//         }
-//         mysqli_stmt_close($stmt);
-// }
-
-// $sql = "SELECT DISTINCT starttime FROM movies ORDER BY starttime ASC";
-
-
-// if ($stmt = mysqli_prepare($link, $sql)) {
-//         if (mysqli_stmt_execute($stmt)) {
-//                 mysqli_stmt_bind_result($stmt, $starttime);
-//                 while (mysqli_stmt_fetch($stmt)) {
-//                         $row = "<option value=\"" . $starttime . "\">" . $starttime . "</option>";
-//                         $timelist .= $row;
-//                 }
-//         } else {
-//                 echo "Oops! Something went wrong. Please try again later.";
-//         }
-//         mysqli_stmt_close($stmt);
-// }
 
 
 // Now Work on Form
